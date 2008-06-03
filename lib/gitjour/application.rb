@@ -1,7 +1,9 @@
 require 'rubygems'
-require 'dnssd'
+require 'net/dns/mdns-sd'
 require 'set'
 require 'gitjour/version'
+
+  DNSSD = Net::DNS::MDNSSD
 
 Thread.abort_on_exception = true
 
