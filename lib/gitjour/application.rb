@@ -1,9 +1,10 @@
 require 'rubygems'
+gem 'net-mdns'
 require 'net/dns/mdns-sd'
 require 'set'
 require 'gitjour/version'
 
-  DNSSD = Net::DNS::MDNSSD
+DNSSD = Net::DNS::MDNSSD
 
 Thread.abort_on_exception = true
 
@@ -169,10 +170,10 @@ module Gitjour
       def announce_repo(path, name, port)
         return unless File.exists?("#{path}/.git")
 
-        tr = DNSSD::TextRecord.new
-        tr['description'] = File.read("#{path}/.git/description") rescue "a git project"
-
-        DNSSD.register(name, "_git._tcp", 'local', port, tr.encode) do |rr|
+        # this is what DNSSD::TextRecord#encode appears to do
+        description = File.read("#{path}/.git/description") rescue "a git project"
+        encoded = "\016description=#{description}"
+        DNSSD.register(name, "_git._tcp", 'local', port, encoded) do |rr|
           puts "Registered #{name} on port #{port}. Starting service."
         end
       end
