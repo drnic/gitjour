@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
-require 'rubygems'
-require 'gitjour'
+require File.dirname(__FILE__) + '/../lib/gitjour'
+
 
 trap "INT" do
   exit!
