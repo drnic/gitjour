@@ -127,11 +127,11 @@ module Gitjour
       end
       
       def find_services(name)
-        service_list.select { |s| /#{name}/.match(s.name) }
+        service_list.select { |s| /#{name}/.match(s.name.downcase) }
       end
       
       def find_service(name)
-        service_list.detect { |s| /#{name}/.match(s.name) }
+        service_list.detect { |s| /#{name}/.match(s.name.downcase) }
       end
       
       def remote(name, label = nil, *rest)
