@@ -49,7 +49,6 @@ module Gitjour
           repository
         end.each do |(repository, services)|
           local_services = services.select { |s| s.host == Socket.gethostname + "." }
-          puts rest.inspect
           services -= local_services unless rest.include?("--local")
           lines << "=== #{repository} #{services.length > 1 ? "(#{services.length} copies)" : ""}" if services.size >= 1
           services.sort_by {|s| s.host}.each do |service|
