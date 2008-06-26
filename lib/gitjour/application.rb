@@ -40,6 +40,7 @@ module Gitjour
       private      
       
       def service_list_display(service_list, *rest)
+        @total_services = 0
         lines = []
         service_list.inject({}) do |service_by_repository, service|
           service_by_repository[service.repository] ||= []
@@ -49,8 +50,8 @@ module Gitjour
           repository
         end.each do |(repository, services)|
           local_services = services.select { |s| s.host == Socket.gethostname + "." }
-          puts rest.inspect
           services -= local_services unless rest.include?("--local")
+          @total_services += services.size
           lines << "=== #{repository} #{services.length > 1 ? "(#{services.length} copies)" : ""}" if services.size >= 1
           services.sort_by {|s| s.host}.each do |service|
             lines << "\t#{service.name} #{service.url}"
@@ -61,6 +62,7 @@ module Gitjour
       
       def list(*rest)
         puts service_list_display(service_list, *rest)
+        puts "#{@total_services} repositories shown." 
       end
 
       def serve(path=Dir.pwd, *rest)
